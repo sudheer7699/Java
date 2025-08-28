@@ -1,0 +1,47 @@
+package pages;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class HomePage {
+    WebDriver driver;
+
+    // Welcome message after login
+    @FindBy(xpath = "//h1[@class='title' or contains(text(),'Welcome')]")
+    WebElement welcomeMessage;
+
+    // Accounts Overview link
+    @FindBy(linkText = "Accounts Overview")
+    WebElement accountsOverviewLink;
+
+    // Open New Account link
+    @FindBy(linkText = "Open New Account")
+    WebElement openNewAccountLink;
+
+    // Transfer Funds link
+    @FindBy(linkText = "Transfer Funds")
+    WebElement transferFundsLink;
+
+    public HomePage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    public String getWelcomeMessage() {
+        return welcomeMessage.getText();
+    }
+
+    public void goToAccountsOverview() {
+        accountsOverviewLink.click();
+    }
+
+    public void goToOpenNewAccount() {
+        openNewAccountLink.click();
+    }
+
+    public void goToTransferFunds() {
+        transferFundsLink.click();
+    }
+}

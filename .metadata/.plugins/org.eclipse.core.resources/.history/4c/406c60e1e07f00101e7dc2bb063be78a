@@ -1,0 +1,37 @@
+package helpers;
+
+import AutomationProject.Waits;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.WebDriver;
+
+import java.time.Duration;
+
+public class AlertHelper {
+    private final WebDriver driver;
+    private final Waits waits;
+
+    public AlertHelper(WebDriver driver) {
+        this.driver = driver;
+        this.waits = new Waits(driver, Duration.ofSeconds(5));
+    }
+
+    public void acceptAlert() {
+        Alert alert = waits.waitForAlert();
+        alert.accept();
+    }
+
+    public void dismissAlert() {
+        Alert alert = waits.waitForAlert();
+        alert.dismiss();
+    }
+
+    public String getAlertText() {
+        return waits.waitForAlert().getText();
+    }
+
+    public void sendKeysToAlert(String text) {
+        Alert alert = waits.waitForAlert();
+        alert.sendKeys(text);
+        alert.accept();
+    }
+}

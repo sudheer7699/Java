@@ -1,0 +1,62 @@
+package tests;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.*;
+import Pages.LoginPage;
+import Pages.homePage;
+
+public class LoginTest {
+    WebDriver driver;
+    LoginPage loginPage;
+    homePage homePage;
+
+    @BeforeClass
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://parabank.parasoft.com/parabank/index.htm");
+
+        loginPage = new LoginPage(driver);
+    }
+
+    @Test
+    public void validLoginShowsDashboard() {
+        // Login with valid credentials (create account if needed)
+        loginPage.enterUsername("john");   // <-- replace with real valid user
+        loginPage.enterPassword("demo");   // <-- replace with real valid password
+        loginPage.clickLogin();
+
+        // Initialize HomePage after login
+        homePage = new homePage(driver);
+
+        // Verify Welcome message is visible
+        String welcomeText = homePage.getWelcomeMessage();
+        Assert.assertTrue(welcomeText.contains("Welcome"), "Login failed: Welcome message not found");
+    }
+
+    @Test(dependsOnMethods = "validLoginShowsDashboard")
+    public void navigateToAccountsOverview() {
+        homePage.goToAccountsOverview();
+        Assert.assertTrue(driver.getTitle().contains("Accounts Overview"), "Failed to open Accounts Overview");
+    }
+
+    @Test(dependsOnMethods = "validLoginShowsDashboard")
+    public void navigateToOpenNewAccount() {
+        homePage.goToOpenNewAccount();
+        Assert.assertTrue(driver.getTitle().contains("Open Account"), "Failed to open 'Open New Account' page");
+    }
+
+    @Test(dependsOnMethods = "validLoginShowsDashboard")
+    public void navigateToTransferFunds() {
+        homePage.goToTransferFunds();
+        Assert.assertTrue(driver.getTitle().contains("Transfer Funds"), "Failed to open Transfer Funds page");
+    }
+
+    @AfterClass
+    public void tearDown() {
+        driver.quit();
+    }
+}

@@ -1,0 +1,24 @@
+package tests;
+
+import base.BaseTest;
+import Pages.LoginPage;
+import Pages.HomePage;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+public class LoginTest extends BaseTest {
+
+    @Test
+    public void verifyValidLogin() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.enterUsername("john");   // Parabank demo user
+        loginPage.enterPassword("demo");   // Parabank demo password
+        loginPage.clickLogin();
+
+        HomePage homePage = new HomePage(driver);
+
+        // Assertion: verify that "Welcome John Smith" appears
+        String welcomeText = HomePage.getWelcomeText();
+        Assert.assertTrue(welcomeText.contains("Welcome"), "Login failed - Welcome text not found!");
+    }
+}

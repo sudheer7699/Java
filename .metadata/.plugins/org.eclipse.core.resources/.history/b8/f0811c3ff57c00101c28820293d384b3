@@ -1,0 +1,60 @@
+package tests;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import yourpackage.LoginPage;
+public class LoginPageTest {
+    WebDriver driver;
+    LoginPage loginPage;
+
+    @BeforeClass
+    public void setUp() {
+        // Set path to your ChromeDriver (if not in PATH)
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://example.com/login");
+
+        // Initialize Page
+        loginPage = new LoginPage(driver);
+    }
+
+    @Test
+    public void testLogin() {
+        loginPage.login("myUser", "myPass");
+        // Add assertions here
+    }
+
+    @AfterClass
+    public void tearDown() {
+        driver.quit();
+    }
+}
+
+
+    @Test(dependsOnMethods = "validLoginShowsDashboard")
+    public void navigateToAccountsOverview() {
+        homePage.goToAccountsOverview();
+        Assert.assertTrue(driver.getTitle().contains("Accounts Overview"), "Failed to open Accounts Overview");
+    }
+
+    @Test(dependsOnMethods = "validLoginShowsDashboard")
+    public void navigateToOpenNewAccount() {
+        homePage.goToOpenNewAccount();
+        Assert.assertTrue(driver.getTitle().contains("Open Account"), "Failed to open 'Open New Account' page");
+    }
+
+    @Test(dependsOnMethods = "validLoginShowsDashboard")
+    public void navigateToTransferFunds() {
+        homePage.goToTransferFunds();
+        Assert.assertTrue(driver.getTitle().contains("Transfer Funds"), "Failed to open Transfer Funds page");
+    }
+
+    @AfterClass
+    public void tearDown() {
+        driver.quit();
+    }
+}

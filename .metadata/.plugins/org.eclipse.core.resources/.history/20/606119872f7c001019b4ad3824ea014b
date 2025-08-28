@@ -1,0 +1,39 @@
+package designPatterns;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+
+public class FacadeLogin {
+    private final WebDriver driver;
+    private final WebDriverWait wait;
+
+    // Locators (OrangeHRM login page)
+    private final By txtUsername = By.name("username");
+    private final By txtPassword = By.name("password");
+    private final By btnLogin   = By.cssSelector("button[type='submit']");
+    private final By lblError   = By.cssSelector(".oxd-alert-content-text");
+
+    public FacadeLogin(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+    }
+
+    public String login(String uname, String pwd) {
+        WebElement user = wait.until(ExpectedConditions.visibilityOfElementLocated(txtUsername));
+        user.clear();
+        user.sendKeys(uname);
+
+        WebElement pass = wait.until(ExpectedConditions.visibilityOfElementLocated(txtPassword));
+        pass.clear();
+        pass.sendKeys(pwd);
+
+        wait.until(ExpectedConditions.elementToBeClickable(btnLogin)).click();
+
+        WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(lblError));
+        return error.getText();
+    }
+}

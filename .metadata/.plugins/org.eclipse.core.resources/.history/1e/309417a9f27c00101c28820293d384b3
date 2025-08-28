@@ -1,0 +1,49 @@
+package Pages;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class LoginPage {
+    WebDriver driver;
+
+    // Locate username field
+    @FindBy(name = "username")
+    WebElement usernameField;
+
+    // Locate password field
+    @FindBy(name = "password")
+    WebElement passwordField;
+
+    // Locate login button (adjust locator as needed)
+    @FindBy(xpath = "//input[@value='Log In' or @type='submit']")
+    WebElement loginButton;
+
+    // Locate 'Register' link
+    @FindBy(linkText = "Register")
+    WebElement registerLink;
+
+    // Constructor
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this); // Initializes annotated elements
+    }
+
+    // Actions
+    public void enterUsername(String user) {
+        usernameField.sendKeys(user);
+    }
+
+    public void enterPassword(String pass) {
+        passwordField.sendKeys(pass);
+    }
+
+    public void clickLogin() {
+        loginButton.click();
+    }
+
+    public void clickRegister() {
+        registerLink.click();
+    }
+}

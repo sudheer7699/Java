@@ -1,0 +1,35 @@
+package tests;
+
+import AutomationProject.DriverFactory;
+import helpers.AlertHelper;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.*;
+
+public class AlertTests {
+    WebDriver driver;
+    AlertHelper alerts;
+
+    @BeforeMethod
+    public void setup() {
+        DriverFactory.init();
+        driver = DriverFactory.get();
+        alerts = new AlertHelper(driver);
+    }
+
+    @AfterMethod
+    public void teardown() { DriverFactory.quit(); }
+
+    @Test
+    public void testAlerts() {
+        driver.get("https://demoqa.com/alerts");
+        driver.findElement(By.id("alertButton")).click();
+        alerts.acceptAlert();
+
+        driver.findElement(By.id("confirmButton")).click();
+        alerts.dismissAlert();
+
+        driver.findElement(By.id("promtButton")).click();
+        alerts.sendKeysToAlert("DemoQA Test");
+    }
+}

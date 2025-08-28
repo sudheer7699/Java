@@ -1,0 +1,34 @@
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+public class LoginTest {
+    WebDriver driver;
+    LoginPage loginPage;
+
+    @BeforeClass
+    public void setUp() {
+        // Set path to your ChromeDriver (if not in PATH)
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://example.com/login");
+
+        // Initialize Page
+        loginPage = new LoginPage(driver);
+    }
+
+    @Test
+    public void testLogin() {
+        loginPage.login("myUser", "myPass");
+        // Add assertions here
+    }
+
+    @AfterClass
+    public void tearDown() {
+        driver.quit();
+    }
+}

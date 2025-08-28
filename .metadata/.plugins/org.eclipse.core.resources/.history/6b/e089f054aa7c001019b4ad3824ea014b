@@ -1,0 +1,31 @@
+package tests;
+
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+import org.testng.annotations.*;
+import designPatterns.SingletonDriver;
+import designPatterns.FacadeLogin;
+
+public class LoginTest {
+    WebDriver driver;
+    FacadeLogin facade;
+
+    @BeforeClass
+    public void setup() {
+        driver = SingletonDriver.getDriver();       // ✅ use singleton driver
+        driver.manage().window().maximize();
+        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+        facade = new FacadeLogin(driver);          
+    }
+
+    @Test
+    public void testInvalidLogin() {
+        String err = facade.login("Admin", "wrongPass!"); 
+        Assert.assertTrue(err.contains("Invalid credentials"), "Error message mismatch");
+    }
+
+    @AfterClass
+    public void tearDown() {
+        driver.quit();  
+    }
+}
